@@ -6,7 +6,11 @@ from paapi5_python_sdk.models.search_items_resource import SearchItemsResource
 from paapi5_python_sdk.rest import ApiException
 from dotenv import load_dotenv
 import os
+from flask_cors import CORS
+
+
 app = Flask(__name__)
+CORS(app)
 load_dotenv()
 # Your Amazon credentials
 ACCESS_KEY = os.getenv("ACCESS_KEY")
