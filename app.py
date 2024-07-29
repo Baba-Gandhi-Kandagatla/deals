@@ -90,6 +90,7 @@ def search_items():
         if response.search_result is not None:
             for item in response.search_result.items:
                 item_info = {
+                    "DetailPageURL":item.detail_page_url,
                     "ASIN": item.asin,
                     "Title": item.item_info.title.display_value if item.item_info and item.item_info.title else None,
                     "Features": item.item_info.features.display_values if item.item_info and item.item_info.features else [],
