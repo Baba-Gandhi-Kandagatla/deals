@@ -95,40 +95,15 @@ def search_items():
             for item in response.search_result.items:
                 item_info = {
                     "DetailPageURL":item.detail_page_url,
-                    "ASIN": item.asin,
                     "Title": item.item_info.title.display_value if item.item_info and item.item_info.title else None,
                     "Features": item.item_info.features.display_values if item.item_info and item.item_info.features else [],
-                    "ProductInfo": {
-                        "Height": item.item_info.product_info.item_dimensions.height.display_value if item.item_info and item.item_info.product_info and item.item_info.product_info.item_dimensions and item.item_info.product_info.item_dimensions.height else None,
-                        "Length": item.item_info.product_info.item_dimensions.length.display_value if item.item_info and item.item_info.product_info and item.item_info.product_info.item_dimensions and item.item_info.product_info.item_dimensions.length else None,
-                        "Width": item.item_info.product_info.item_dimensions.width.display_value if item.item_info and item.item_info.product_info and item.item_info.product_info.item_dimensions and item.item_info.product_info.item_dimensions.width else None,
-                        "Weight": item.item_info.product_info.item_dimensions.weight.display_value if item.item_info and item.item_info.product_info and item.item_info.product_info.item_dimensions and item.item_info.product_info.item_dimensions.weight else None,
-                    },
                     "Images": {
                         "Primary": {
                             "Small": item.images.primary.small.url if item.images and item.images.primary and item.images.primary.small else None,
                             "Medium": item.images.primary.medium.url if item.images and item.images.primary and item.images.primary.medium else None,
                             "Large": item.images.primary.large.url if item.images and item.images.primary and item.images.primary.large else None,
-                        },
-                        "Variants": [
-                            {
-                                "Small": variant.small.url if variant and variant.small else None,
-                                "Medium": variant.medium.url if variant and variant.medium else None,
-                                "Large": variant.large.url if variant and variant.large else None,
-                            } for variant in item.images.variants if item.images and item.images.variants
-                        ],
+                        }
                     },
-                    "BrowseNodes": [
-                        {
-                            "ID": node.id,
-                            "DisplayName": node.display_name,
-                            "Ancestor": {
-                                "ID": node.ancestor.id if node.ancestor else None,
-                                "DisplayName": node.ancestor.display_name if node.ancestor else None
-                            } if node.ancestor else None,
-                            "SalesRank": node.sales_rank if node.sales_rank else None
-                        } for node in item.browse_node_info.browse_nodes if item.browse_node_info and item.browse_node_info.browse_nodes
-                    ],
                     "Offers": [
                         {
                             "Price": offer.price.amount if offer and offer.price else None,
@@ -144,8 +119,8 @@ def search_items():
                                 "IsFreeShippingEligible": offer.delivery_info.is_free_shipping_eligible if offer and offer.delivery_info else None,
                                 "IsPrimeEligible": offer.delivery_info.is_prime_eligible if offer and offer.delivery_info else None,
                             } if offer.delivery_info else None,
-                        } for offer in item.offers.listings if item.offers and item.offers.listings
-                    ]
+                        } for offer in item.offers.listings if item.offers is not None and item.offers.listings is not None
+                    ] if item.offers is not None and item.offers.listings is not None else []
                 }
                 items.append(item_info)
         
